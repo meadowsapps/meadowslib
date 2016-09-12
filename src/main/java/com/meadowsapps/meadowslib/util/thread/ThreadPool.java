@@ -19,7 +19,7 @@ public class ThreadPool {
      * An array of workers to execute Executables as they are
      * submitted to the queue
      */
-    private ThreadWorker[] workers;
+    private ThreadPoolWorker[] workers;
 
     /**
      * Creates a new ThreadPool instance with the specified size
@@ -29,14 +29,31 @@ public class ThreadPool {
     public ThreadPool(int size) {
         if (size > 0) {
             queue = new LinkedBlockingQueue<Executable>();
-            workers = new ThreadWorker[size];
+            workers = new ThreadPoolWorker[size];
             for (int i = 0; i < size; i++) {
-                workers[i] = new ThreadWorker();
-                workers[i].start();
+                workers[i] = new ThreadPoolWorker();
             }
         } else {
             IllegalArgumentException e = new IllegalArgumentException("Size must be greater than 0");
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Starts all of the thread workers
+     */
+    public void start() {
+        for (ThreadPoolWorker worker : workers) {
+            worker.start();
+        }
+    }
+
+    /**
+     * Stops all of the thread workers
+     */
+    public void stop() {
+        for (ThreadPoolWorker worker : workers) {
+            worker.stop();
         }
     }
 
@@ -66,19 +83,17 @@ public class ThreadPool {
      * Thread worker implementation that executes tasks as it receives them
      * while running continuously
      */
-    class ThreadWorker extends Thread {
+    class ThreadPoolWorker extends AbstractContinuousThread {
         /**
-         * Defines what the worker is supposed to do when running
+         * Defines the ThreadPoolWorker's behavior
          */
         @Override
-        public void run() {
-            while (true) {
-                try {
-                    Executable executable = retrieve();
-                    executable.execute();
-                } catch (InterruptedException e) {
-                    Logger.getLogger().warn(e);
-                }
+        public void execute() {
+            try {
+                Executable executable = retrieve();
+                executable.execute();
+            } catch (InterruptedException e) {
+                Logger.getLogger().warn(e);
             }
         }
     }
