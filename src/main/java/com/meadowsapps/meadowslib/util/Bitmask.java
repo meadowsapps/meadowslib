@@ -122,10 +122,4 @@ public class Bitmask {
         return map.length;
     }
 
-    public static void main(String[] args) {
-        Bitmask bitmask = new Bitmask(10);
-        bitmask.setAll(true);
-        System.out.println(bitmask.getValue());
-    }
-
 }
