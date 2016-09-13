@@ -14,7 +14,7 @@ public abstract class AbstractContinuousThread implements ContinuousThreadI {
     /**
      * The thread delegate for the AbstractContinuousThread class
      */
-    private Thread delegate;
+    private java.lang.Thread delegate;
 
     /**
      * Creates a new AbstractContinuousThread instance
@@ -27,7 +27,7 @@ public abstract class AbstractContinuousThread implements ContinuousThreadI {
      * Initializes the
      */
     private void init() {
-        delegate = new Thread() {
+        delegate = new java.lang.Thread() {
             @Override
             public void run() {
                 AbstractContinuousThread.this.run();

@@ -8,7 +8,7 @@ public abstract class AbstractThread implements ThreadI {
     /**
      * The thread delegate for the AbstractContinuousThread class
      */
-    private Thread delegate;
+    private java.lang.Thread delegate;
 
     /**
      * Creates a new AbstractContinuousThread instance
@@ -21,7 +21,7 @@ public abstract class AbstractThread implements ThreadI {
      * Initializes the
      */
     private void init() {
-        delegate = new Thread() {
+        delegate = new java.lang.Thread() {
             @Override
             public void run() {
                 AbstractThread.this.execute();
